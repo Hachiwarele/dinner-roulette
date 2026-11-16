@@ -14,3 +14,26 @@ footer{text-align:center;color:#b6a394;font-size:10px;padding:20px} [hidden]{dis
 .page-tabs{display:flex;justify-content:center;gap:8px;margin:22px auto 0}.page-tab{border:1px solid #eadfd4;background:#fffdf9;color:#806d5d;border-radius:999px;padding:10px 17px;font-size:12px;font-weight:700}.page-tab.active{background:#4c7967;border-color:#4c7967;color:#fff}
 .editor-panel{border-color:#dce8d8}.editor-panel .step{background:#eaf1e7;color:#5c8062}.editor-selects{display:grid;grid-template-columns:1fr 1fr;gap:12px}.editor-selects label,.add-menu label{display:flex;flex-direction:column;gap:7px;font-size:11px;font-weight:700;color:#78685b}.editor-selects select{width:100%;border:1px solid #e8ded3;border-radius:12px;background:#fff;padding:11px;color:#55483f;font:inherit;font-size:12px}.editor-help{font-size:11px;color:#9a8879;margin:18px 0 10px}.menu-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}.menu-list li{display:flex;gap:8px;align-items:center}.menu-list input{min-width:0;flex:1;border:1px solid #eadfd4;border-radius:11px;padding:10px 12px;font:inherit;font-size:12px;color:#55483f;background:#fff}.delete-menu{border:1px solid #f0d8d0;background:#fff7f4;color:#b76b57;border-radius:10px;padding:9px 11px;font-size:11px}.add-menu{border-top:1px dashed #e9d9c8;margin-top:18px;padding-top:16px}.add-row{display:flex;gap:8px;margin-top:8px}.add-row input{min-width:0;flex:1;border:1px solid #eadfd4;border-radius:11px;padding:11px;font:inherit;font-size:12px}.add-row button{border:0;border-radius:11px;background:#66876b;color:#fff;padding:0 16px;font-size:12px;font-weight:700}.save-note{text-align:center;color:#66876b;font-size:10px;margin:16px 0 10px}.reset-button{display:block;margin:12px auto 0;border:0;background:transparent;color:#a39487;text-decoration:underline;font-size:10px;padding:8px}
 @media(max-width:480px){.editor-selects{grid-template-columns:1fr}.page-tab{padding:9px 13px}.add-row button{padding:0 12px}}
+/* Dark theme */
+body[data-theme="dark"]{color:#f2e9df;background:radial-gradient(ellipse at 50% 0%,#3b3029 0,transparent 50%),#171615}
+body[data-theme="dark"] .hero p,body[data-theme="dark"] .section-heading p,body[data-theme="dark"] .mode-card small,body[data-theme="dark"] .hint,body[data-theme="dark"] .editor-help{color:#b7a99b}
+body[data-theme="dark"] .panel{background:#24211f;border-color:#403832;box-shadow:0 9px 30px #0003}
+body[data-theme="dark"] .step{background:#493629;color:#f0b98e}
+body[data-theme="dark"] .mode-card{background:#2c2825;border-color:#51463d;color:#f2e9df}
+body[data-theme="dark"] .mode-card.active{background:#493528;border-color:#d99566}
+body[data-theme="dark"] .fixed-btn,body[data-theme="dark"] .page-tab,body[data-theme="dark"] .again-button{background:#302b27;border-color:#51463d;color:#e6d8ca}
+body[data-theme="dark"] .fixed-btn.active,body[data-theme="dark"] .page-tab.active{background:#52745e;border-color:#52745e;color:#fff}
+body[data-theme="dark"] .wheel{background:linear-gradient(145deg,#49372b,#382b24);border-color:#624a38}
+body[data-theme="dark"] .wheel strong{color:#f3c49d}
+body[data-theme="dark"] .detail-wheel{background:linear-gradient(145deg,#2e4032,#26352a);border-color:#405b45}
+body[data-theme="dark"] .detail-wheel strong{color:#d3e7ce}
+body[data-theme="dark"] .detail-panel .step,body[data-theme="dark"] .editor-panel .step{background:#304333;color:#c2dfc0}
+body[data-theme="dark"] .result{border-color:#51463d}
+body[data-theme="dark"] .result p,body[data-theme="dark"] footer{color:#b7a99b}
+body[data-theme="dark"] .editor-selects select,body[data-theme="dark"] .menu-list input,body[data-theme="dark"] .add-row input{background:#302b27;border-color:#51463d;color:#f2e9df}
+body[data-theme="dark"] .delete-menu{background:#432d29;border-color:#68443d;color:#f0b2a4}
+body[data-theme="dark"] .add-menu{border-color:#51463d}
+body[data-theme="dark"] .save-note{color:#a9c9a7}
+.theme-toggle{border:1px solid #eadfd4;background:#fffdf9;color:#806d5d;border-radius:999px;padding:10px 13px;font-size:11px;font-weight:700}
+body[data-theme="dark"] .theme-toggle{background:#302b27;border-color:#51463d;color:#f0d6b9}
+@media(max-width:480px){.page-tabs{flex-wrap:wrap}.theme-toggle{padding:9px 12px}}
