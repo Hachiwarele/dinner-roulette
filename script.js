@@ -1,10 +1,13 @@
 const defaultMenus={home:{麺:["ラーメン","つけ麺","うどん","そば","パスタ","焼きそば","そうめん"],ご飯:["カレーライス","チャーハン","オムライス","丼もの","炊き込みご飯","定食"],パン:["サンドイッチ","ホットサンド","ピザトースト","ハンバーガー","フレンチトースト"]},outside:{麺:["ラーメン","つけ麺","うどん","そば","パスタ","油そば","ちゃんぽん"],ご飯:["寿司","焼肉","丼もの","定食","カレー","中華料理","ハンバーグ"],パン:["ハンバーガー","サンドイッチ","ベーカリーカフェ","ピザ","カフェごはん"]}};
 const STORAGE_KEY="dinner-roulette-menus-v1";
+const THEME_KEY="dinner-roulette-theme-v1";
+let darkMode=localStorage.getItem(THEME_KEY)==="dark";
 function cloneDefaults(){return JSON.parse(JSON.stringify(defaultMenus))}
 function loadMenus(){try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));if(!saved)return cloneDefaults();const out=cloneDefaults();for(const m of ["home","outside"])for(const c of ["麺","ご飯","パン"])if(Array.isArray(saved[m]?.[c]))out[m][c]=saved[m][c].filter(x=>typeof x==="string"&&x.trim()).map(x=>x.trim());return out}catch{return cloneDefaults()}}
 let menus=loadMenus();
 const state={mode:"home",fixed:"any",main:null,busy:false};
 const $=id=>document.getElementById(id),mainWheel=$("main-wheel"),detailWheel=$("detail-wheel"),mainValue=$("main-value"),detailValue=$("detail-value"),detailPanel=$("detail-panel"),result=$("result");
+function applyTheme(){document.body.dataset.theme=darkMode?"dark":"light";$("theme-toggle").textContent=darkMode?"☀️ ライト":"🌙 ダーク";}
 function saveMenus(){localStorage.setItem(STORAGE_KEY,JSON.stringify(menus));$("save-note").textContent="保存したよ！次に開いたときもこの内容だよ 💾"}
 function currentList(){return menus[$("edit-mode").value][$("edit-category").value]}
 function renderEditor(){const ul=$("menu-list");ul.replaceChildren();currentList().forEach((name,i)=>{const li=document.createElement("li"),input=document.createElement("input"),del=document.createElement("button");input.type="text";input.maxLength=40;input.value=name;input.setAttribute("aria-label","メニュー名");input.addEventListener("change",()=>{const v=input.value.trim();if(!v){input.value=currentList()[i];return}currentList()[i]=v;saveMenus()});del.type="button";del.className="delete-menu";del.textContent="削除";del.addEventListener("click",()=>{currentList().splice(i,1);saveMenus();renderEditor()});li.append(input,del);ul.append(li)});if(!currentList().length){const li=document.createElement("li");li.textContent="選択肢が空だよ。下から追加してね！";ul.append(li)}}
@@ -13,7 +16,7 @@ function setMode(mode){state.mode=mode;document.querySelectorAll(".mode-card").f
 function setFixed(v){state.fixed=v;document.querySelectorAll(".fixed-btn").forEach(b=>b.classList.toggle("active",b.dataset.fixed===v));state.main=v==="any"?null:v;result.hidden=true;detailPanel.hidden=v==="any";mainValue.textContent=v==="any"?"麺？ ご飯？ パン？":v+"に固定中！";$("main-hint").textContent=v==="any"?"「麺固定」などを選ぶと、主食ルーレットをスキップできるよ。":v+"固定！主食ルーレットを飛ばして、次へ進めるよ。";if(state.main)showDetail()}
 function resetAfterMode(){state.main=state.fixed==="any"?null:state.fixed;result.hidden=true;detailPanel.hidden=!state.main;mainValue.textContent=state.main?state.main+"に固定中！":"麺？ ご飯？ パン？";if(state.main)showDetail()}
 function choose(a){return a[Math.floor(Math.random()*a.length)]}
-function spin(el,out,options,done){if(state.busy)return;if(!options.length){alert("この主食の選択肢がないよ。編集ページから追加してね！");return}state.busy=true;el.classList.add("spinning");const btn=el.parentElement.querySelector("button");btn.disabled=true;let n=0;const timer=setInterval(()=>{out.textContent=choose(options);if(++n>=15){clearInterval(timer);const picked=choose(options);out.textContent=picked;el.classList.remove("spinning");btn.disabled=false;state.busy=false;done(picked)}},85)}
+function spin(el,out,options,done){if(state.busy)return;if(!options.length){alert("この主食の選択肢がないよ。編集ページから追加してね！");return}state.busy=true;el.classList.add("spinning");const btn=el.parentElement.querySelector("button");btn.disabled=true;let n=0;const timer=setInterval(()=>{out.textContent=darkMode?options[0]:choose(options);if(++n>=15){clearInterval(timer);const picked=darkMode?options[0]:choose(options);out.textContent=picked;el.classList.remove("spinning");btn.disabled=false;state.busy=false;done(picked)}},85)}
 function showDetail(){detailPanel.hidden=false;const labels={麺:"麺なら何にする？",ご飯:"ご飯なら何にする？",パン:"パンなら何にする？"};$("detail-title").textContent=labels[state.main]||"何を食べる？";detailValue.textContent="何が出るかな？";$("detail-spin").textContent="ジャンルを回す ↗";result.hidden=true}
 function showResult(item){$("result-title").textContent=item;$("result-description").textContent=(state.mode==="home"?"おうちで手作り！":"今日は外食！")+" 今夜はこれに決まり！";result.hidden=false}
 $("main-spin").addEventListener("click",()=>{if(state.fixed!=="any"){showDetail();return}spin(mainWheel,mainValue,["麺","ご飯","パン"],picked=>{state.main=picked;showDetail();detailPanel.scrollIntoView({behavior:"smooth",block:"center"})})});
@@ -22,6 +25,8 @@ $("again").addEventListener("click",()=>{result.hidden=true;detailValue.textCont
 document.querySelectorAll(".mode-card").forEach(b=>b.addEventListener("click",()=>setMode(b.dataset.mode)));
 document.querySelectorAll(".fixed-btn").forEach(b=>b.addEventListener("click",()=>setFixed(b.dataset.fixed)));
 $("roulette-tab").addEventListener("click",()=>showPage("roulette"));$("settings-tab").addEventListener("click",()=>showPage("settings"));
+$("theme-toggle").addEventListener("click",()=>{darkMode=!darkMode;localStorage.setItem(THEME_KEY,darkMode?"dark":"light");applyTheme()});
+applyTheme();
 $("edit-mode").addEventListener("change",renderEditor);$("edit-category").addEventListener("change",renderEditor);
 $("add-menu").addEventListener("click",()=>{const input=$("new-menu"),v=input.value.trim();if(!v){input.focus();return}if(currentList().some(x=>x.toLowerCase()===v.toLowerCase())){$("save-note").textContent="同じ名前のメニューがもうあるよ！";return}currentList().push(v);input.value="";saveMenus();renderEditor()});
 $("new-menu").addEventListener("keydown",e=>{if(e.key==="Enter")$("add-menu").click()});
