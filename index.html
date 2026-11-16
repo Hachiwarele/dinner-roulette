@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff8ef">
+  <title>今夜なに食べる？｜夕飯ルーレット</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./script.js" defer></script>
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <div class="eyebrow">TONIGHT'S MENU ✦ DECISION MAKER</div>
+      <h1>今夜なに食べる？<span>🍽️</span></h1>
+      <p>迷った夜は、ルーレットにおまかせ。</p>
+    </header>
+
+    <section class="mode-panel panel">
+      <div class="section-heading"><span class="step">01</span><div><h2>今日はどっち？</h2><p>まずは食べ方を選ぼう</p></div></div>
+      <div class="mode-options" role="group" aria-label="食べ方">
+        <button class="mode-card active" data-mode="home" type="button"><span class="mode-emoji">🏠</span><strong>手作り</strong><small>おうちで作る</small></button>
+        <button class="mode-card" data-mode="outside" type="button"><span class="mode-emoji">🍴</span><strong>外食</strong><small>お店で食べる</small></button>
+      </div>
+    </section>
+
+    <section class="panel roulette-panel">
+      <div class="section-heading"><span class="step">02</span><div><h2>主食を決めよう</h2><p>麺・ご飯・パンから選ぶよ</p></div></div>
+      <div class="fixed-row">
+        <span>主食を固定する</span>
+        <div class="fixed-buttons" role="group" aria-label="主食固定">
+          <button class="fixed-btn active" data-fixed="any" type="button">おまかせ</button>
+          <button class="fixed-btn" data-fixed="麺" type="button">🍜 麺固定</button>
+          <button class="fixed-btn" data-fixed="ご飯" type="button">🍚 ご飯固定</button>
+          <button class="fixed-btn" data-fixed="パン" type="button">🍞 パン固定</button>
+        </div>
+      </div>
+      <div class="wheel-wrap">
+        <div class="wheel" id="main-wheel"><span class="wheel-emoji">🎲</span><strong id="main-value">麺？ ご飯？ パン？</strong></div>
+        <button class="spin-button" id="main-spin" type="button">ルーレットを回す <span>↗</span></button>
+      </div>
+      <p class="hint" id="main-hint">「麺固定」などを選ぶと、主食ルーレットをスキップできるよ。</p>
+    </section>
+
+    <section class="panel detail-panel" id="detail-panel" hidden>
+      <div class="section-heading"><span class="step">03</span><div><h2 id="detail-title">麺なら何にする？</h2><p>最後のひと決め！</p></div></div>
+      <div class="wheel-wrap">
+        <div class="wheel detail-wheel" id="detail-wheel"><span class="wheel-emoji">🍜</span><strong id="detail-value">何が出るかな？</strong></div>
+        <button class="spin-button" id="detail-spin" type="button">ジャンルを回す <span>↗</span></button>
+      </div>
+      <div class="result" id="result" hidden aria-live="polite">
+        <div class="result-label">TONIGHT'S MENU</div>
+        <div class="result-title" id="result-title"></div>
+        <p id="result-description"></p>
+        <button class="again-button" id="again" type="button">↻ もう一回決める</button>
+      </div>
+    </section>
+
+    <footer>おいしい夜になりますように 🥢</footer>
+  </main>
+</body>
+</html>
