@@ -27,6 +27,24 @@ document.querySelectorAll(".fixed-btn").forEach(b=>b.addEventListener("click",()
 $("roulette-tab").addEventListener("click",()=>showPage("roulette"));$("settings-tab").addEventListener("click",()=>showPage("settings"));
 $("theme-toggle").addEventListener("click",()=>{darkMode=!darkMode;localStorage.setItem(THEME_KEY,darkMode?"dark":"light");applyTheme()});
 applyTheme();
+
+const missions=[
+"いつもより野菜を1品多く食べよう！ 🥦",
+"食べたことのないメニューに挑戦！ 🌟",
+"食卓に彩りを3色そろえよう！ 🌈",
+"汁物かスープを1品つけよう！ 🍲",
+"今日はゆっくり味わって食べよう！ 😊",
+"冷蔵庫にある食材を1つ使おう！ 🥕",
+"いつもより盛り付けを工夫しよう！ 🍽️",
+"食後にみんなで片付けをしよう！ 🧽",
+"たんぱく質をしっかり取り入れよう！ 🥚",
+"普段選ばない味付けにしてみよう！ 🧂",
+"食事中に今日の楽しかったことを話そう！ 💬",
+"デザートか果物を楽しもう！ 🍓"
+];
+const missionWheel=$("mission-wheel"),missionValue=$("mission-value");
+$("mission-spin").addEventListener("click",()=>spin(missionWheel,missionValue,missions,picked=>{}));
+
 $("edit-mode").addEventListener("change",renderEditor);$("edit-category").addEventListener("change",renderEditor);
 $("add-menu").addEventListener("click",()=>{const input=$("new-menu"),v=input.value.trim();if(!v){input.focus();return}if(currentList().some(x=>x.toLowerCase()===v.toLowerCase())){$("save-note").textContent="同じ名前のメニューがもうあるよ！";return}currentList().push(v);input.value="";saveMenus();renderEditor()});
 $("new-menu").addEventListener("keydown",e=>{if(e.key==="Enter")$("add-menu").click()});
