@@ -37,3 +37,14 @@ body[data-theme="dark"] .save-note{color:#a9c9a7}
 .theme-toggle{border:1px solid #eadfd4;background:#fffdf9;color:#806d5d;border-radius:999px;padding:10px 13px;font-size:11px;font-weight:700}
 body[data-theme="dark"] .theme-toggle{background:#302b27;border-color:#51463d;color:#f0d6b9}
 @media(max-width:480px){.page-tabs{flex-wrap:wrap}.theme-toggle{padding:9px 12px}}
+
+/* Mission roulette */
+.mission-panel{border-color:#eadfbe}.mission-panel .step{background:#fff4d7;color:#a77b31}
+.mission-wheel{background:linear-gradient(145deg,#fff5d9,#f9e8b7);border-color:#efdfb0}
+.mission-wheel strong{color:#80602b;font-size:18px}
+.mission-spin-button{background:#b58a42;box-shadow:0 5px 0 #947035}
+body[data-theme="dark"] .mission-panel{border-color:#554a32}
+body[data-theme="dark"] .mission-panel .step{background:#4b4029;color:#f1d28d}
+body[data-theme="dark"] .mission-wheel{background:linear-gradient(145deg,#493f2b,#383222);border-color:#665735}
+body[data-theme="dark"] .mission-wheel strong{color:#f5d995}
+body[data-theme="dark"] .mission-panel .hint{color:#b7a99b}
