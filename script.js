@@ -1,5 +1,6 @@
 const defaultMenus={home:{麺:["ラーメン","つけ麺","うどん","そば","パスタ","焼きそば","そうめん"],ご飯:["カレーライス","チャーハン","オムライス","丼もの","炊き込みご飯","定食"],パン:["サンドイッチ","ホットサンド","ピザトースト","ハンバーガー","フレンチトースト"]},outside:{麺:["ラーメン","つけ麺","うどん","そば","パスタ","油そば","ちゃんぽん"],ご飯:["寿司","焼肉","丼もの","定食","カレー","中華料理","ハンバーグ"],パン:["ハンバーガー","サンドイッチ","ベーカリーカフェ","ピザ","カフェごはん"]}};
 const STORAGE_KEY="dinner-roulette-menus-v1";
+const MISSION_STORAGE_KEY="dinner-roulette-missions-v1";
 const THEME_KEY="dinner-roulette-theme-v1";
 let darkMode=localStorage.getItem(THEME_KEY)==="dark";
 function cloneDefaults(){return JSON.parse(JSON.stringify(defaultMenus))}
@@ -11,7 +12,7 @@ function applyTheme(){document.body.dataset.theme=darkMode?"dark":"light";$("the
 function saveMenus(){localStorage.setItem(STORAGE_KEY,JSON.stringify(menus));$("save-note").textContent="保存したよ！次に開いたときもこの内容だよ 💾"}
 function currentList(){return menus[$("edit-mode").value][$("edit-category").value]}
 function renderEditor(){const ul=$("menu-list");ul.replaceChildren();currentList().forEach((name,i)=>{const li=document.createElement("li"),input=document.createElement("input"),del=document.createElement("button");input.type="text";input.maxLength=40;input.value=name;input.setAttribute("aria-label","メニュー名");input.addEventListener("change",()=>{const v=input.value.trim();if(!v){input.value=currentList()[i];return}currentList()[i]=v;saveMenus()});del.type="button";del.className="delete-menu";del.textContent="削除";del.addEventListener("click",()=>{currentList().splice(i,1);saveMenus();renderEditor()});li.append(input,del);ul.append(li)});if(!currentList().length){const li=document.createElement("li");li.textContent="選択肢が空だよ。下から追加してね！";ul.append(li)}}
-function showPage(p){const edit=p==="settings";$("roulette-page").hidden=edit;$("settings-page").hidden=!edit;$("roulette-tab").classList.toggle("active",!edit);$("settings-tab").classList.toggle("active",edit);if(edit)renderEditor()}
+function showPage(p){const edit=p==="settings";$("roulette-page").hidden=edit;$("settings-page").hidden=!edit;$("roulette-tab").classList.toggle("active",!edit);$("settings-tab").classList.toggle("active",edit);if(edit){renderEditor();showEditorKind("menu")}}
 function setMode(mode){state.mode=mode;document.querySelectorAll(".mode-card").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));resetAfterMode()}
 function setFixed(v){state.fixed=v;document.querySelectorAll(".fixed-btn").forEach(b=>b.classList.toggle("active",b.dataset.fixed===v));state.main=v==="any"?null:v;result.hidden=true;detailPanel.hidden=v==="any";mainValue.textContent=v==="any"?"麺？ ご飯？ パン？":v+"に固定中！";$("main-hint").textContent=v==="any"?"「麺固定」などを選ぶと、主食ルーレットをスキップできるよ。":v+"固定！主食ルーレットを飛ばして、次へ進めるよ。";if(state.main)showDetail()}
 function resetAfterMode(){state.main=state.fixed==="any"?null:state.fixed;result.hidden=true;detailPanel.hidden=!state.main;mainValue.textContent=state.main?state.main+"に固定中！":"麺？ ご飯？ パン？";if(state.main)showDetail()}
@@ -28,22 +29,32 @@ $("roulette-tab").addEventListener("click",()=>showPage("roulette"));$("settings
 $("theme-toggle").addEventListener("click",()=>{darkMode=!darkMode;localStorage.setItem(THEME_KEY,darkMode?"dark":"light");applyTheme()});
 applyTheme();
 
-const missions=[
-"いつもより野菜を1品多く食べよう！ 🥦",
+const defaultMissions=[
 "食べたことのないメニューに挑戦！ 🌟",
-"食卓に彩りを3色そろえよう！ 🌈",
-"汁物かスープを1品つけよう！ 🍲",
-"今日はゆっくり味わって食べよう！ 😊",
-"冷蔵庫にある食材を1つ使おう！ 🥕",
-"いつもより盛り付けを工夫しよう！ 🍽️",
-"食後にみんなで片付けをしよう！ 🧽",
-"たんぱく質をしっかり取り入れよう！ 🥚",
-"普段選ばない味付けにしてみよう！ 🧂",
-"食事中に今日の楽しかったことを話そう！ 💬",
-"デザートか果物を楽しもう！ 🍓"
+"今日は大盛りにしてみる！ 🍚",
+"いつもと違うトッピングを選ぶ！ 🧀",
+"普段頼まないメニューを選ぶ！ 🎲",
+"好きなものを一品追加する！ 😋",
+"新しい味付け・ソースに挑戦！ 🥫",
+"彩りのいい一品を選ぶ！ 🌈",
+"今日はデザートも楽しむ！ 🍨",
+"いつもよりゆっくり味わって食べる！ 😊",
+"飲み物をいつもと違うものにする！ 🥤",
+"シェアできる一品を頼む・作る！ 🍽️",
+"自分へのご褒美メニューにする！ ✨"
 ];
+function loadMissions(){try{const saved=JSON.parse(localStorage.getItem(MISSION_STORAGE_KEY));return Array.isArray(saved)?saved.filter(x=>typeof x==="string"&&x.trim()).map(x=>x.trim()):[...defaultMissions]}catch{return [...defaultMissions]}}
+let missions=loadMissions();
+function saveMissions(){localStorage.setItem(MISSION_STORAGE_KEY,JSON.stringify(missions));$("mission-save-note").textContent="保存したよ！次に開いたときもこの内容だよ 💾"}
+function renderMissionEditor(){const ul=$("mission-list");ul.replaceChildren();missions.forEach((name,i)=>{const li=document.createElement("li"),input=document.createElement("input"),del=document.createElement("button");input.type="text";input.maxLength=60;input.value=name;input.setAttribute("aria-label","ミッション名");input.addEventListener("change",()=>{const v=input.value.trim();if(!v){input.value=missions[i];return}missions[i]=v;saveMissions()});del.type="button";del.className="delete-menu";del.textContent="削除";del.addEventListener("click",()=>{missions.splice(i,1);saveMissions();renderMissionEditor()});li.append(input,del);ul.append(li)});if(!missions.length){const li=document.createElement("li");li.textContent="ミッションが空だよ。下から追加してね！";ul.append(li)}}
+function showEditorKind(kind){const isMission=kind==="mission";$("menu-editor").hidden=isMission;$("mission-editor").hidden=!isMission;$("edit-kind-menu").classList.toggle("active",!isMission);$("edit-kind-mission").classList.toggle("active",isMission);if(isMission)renderMissionEditor()}
 const missionWheel=$("mission-wheel"),missionValue=$("mission-value");
 $("mission-spin").addEventListener("click",()=>spin(missionWheel,missionValue,missions,picked=>{}));
+$("edit-kind-menu").addEventListener("click",()=>showEditorKind("menu"));
+$("edit-kind-mission").addEventListener("click",()=>showEditorKind("mission"));
+$("add-mission").addEventListener("click",()=>{const input=$("new-mission"),v=input.value.trim();if(!v){input.focus();return}if(missions.some(x=>x.toLowerCase()===v.toLowerCase())){$("mission-save-note").textContent="同じミッションがもうあるよ！";return}missions.push(v);input.value="";saveMissions();renderMissionEditor()});
+$("new-mission").addEventListener("keydown",e=>{if(e.key==="Enter")$("add-mission").click()});
+$("reset-missions").addEventListener("click",()=>{if(confirm("ミッションを最初の内容に戻す？")){missions=[...defaultMissions];saveMissions();renderMissionEditor()}});
 
 $("edit-mode").addEventListener("change",renderEditor);$("edit-category").addEventListener("change",renderEditor);
 $("add-menu").addEventListener("click",()=>{const input=$("new-menu"),v=input.value.trim();if(!v){input.focus();return}if(currentList().some(x=>x.toLowerCase()===v.toLowerCase())){$("save-note").textContent="同じ名前のメニューがもうあるよ！";return}currentList().push(v);input.value="";saveMenus();renderEditor()});
