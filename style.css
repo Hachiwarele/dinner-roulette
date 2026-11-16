@@ -48,3 +48,19 @@ body[data-theme="dark"] .mission-panel .step{background:#4b4029;color:#f1d28d}
 body[data-theme="dark"] .mission-wheel{background:linear-gradient(145deg,#493f2b,#383222);border-color:#665735}
 body[data-theme="dark"] .mission-wheel strong{color:#f5d995}
 body[data-theme="dark"] .mission-panel .hint{color:#b7a99b}
+
+/* Side-by-side mode and mission panels */
+.top-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch}
+.top-choice-grid>.panel{margin:16px 0}
+.top-choice-grid .mode-options{grid-template-columns:1fr 1fr;gap:8px}
+.top-choice-grid .mode-card{padding:13px 6px}
+.top-choice-grid .mission-panel{display:flex;flex-direction:column;justify-content:space-between}
+.top-choice-grid .mission-wheel{width:100%;min-height:116px;padding:12px}
+.top-choice-grid .mission-wheel strong{font-size:15px;overflow-wrap:anywhere}
+.top-choice-grid .mission-spin-button{padding:11px 14px;font-size:12px}
+.editor-kind-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
+.editor-kind{border:1px solid #eadfd4;background:#fffdf9;color:#806d5d;border-radius:12px;padding:11px 8px;font-size:12px;font-weight:700}
+.editor-kind.active{background:#4c7967;border-color:#4c7967;color:#fff}
+body[data-theme="dark"] .editor-kind{background:#302b27;border-color:#51463d;color:#e6d8ca}
+body[data-theme="dark"] .editor-kind.active{background:#52745e;border-color:#52745e;color:#fff}
+@media(max-width:560px){.top-choice-grid{grid-template-columns:1fr;gap:0}.top-choice-grid>.panel{margin:10px 0}.top-choice-grid .mission-wheel{min-height:105px}}
