@@ -141,3 +141,26 @@ function refreshDartWheels(){
 refreshDartWheels();
 const originalSaveMenus=saveMenus;saveMenus=function(){originalSaveMenus();refreshDartWheels()};
 const originalSaveMissions=saveMissions;saveMissions=function(){originalSaveMissions();refreshDartWheels()};
+
+/* Public three-digit shared rooms: local edits remain usable offline. */
+window.dinnerRoomBridge={
+ getSeed:()=>({menus:JSON.parse(JSON.stringify(menus)),missions:[...missions],history:[...dinnerHistory]}),
+ applyRemote(data){
+  if(!data||state.busy)return;
+  if(data.menus&&typeof data.menus==="object"){
+   const safe=cloneDefaults();for(const mode of ["home","outside"])for(const cat of ["麺","ご飯","パン"]){
+    const list=data.menus[mode]?.[cat];if(Array.isArray(list))safe[mode][cat]=list.filter(x=>typeof x==="string"&&x.trim()).slice(0,80).map(x=>x.slice(0,40));
+   }
+   menus=safe;localStorage.setItem(STORAGE_KEY,JSON.stringify(menus));
+  }
+  if(Array.isArray(data.missions)){missions=data.missions.filter(x=>typeof x==="string"&&x.trim()).slice(0,80).map(x=>x.slice(0,60));localStorage.setItem(MISSION_STORAGE_KEY,JSON.stringify(missions))}
+  if(Array.isArray(data.history)){dinnerHistory=data.history.filter(x=>x&&typeof x.item==="string").slice(0,100);localStorage.setItem(HISTORY_KEY,JSON.stringify(dinnerHistory))}
+  renderEditor();renderMissionEditor();renderHistory();refreshDartWheels();
+ },
+ getCurrent:()=>({menus,missions,history:dinnerHistory})
+};
+function notifyRoomChange(key){window.dispatchEvent(new CustomEvent("dinner-room-change",{detail:{key,value:window.dinnerRoomBridge.getCurrent()[key]}}))}
+const baseSaveMenus=saveMenus;saveMenus=function(){baseSaveMenus();notifyRoomChange("menus")};
+const baseSaveMissions=saveMissions;saveMissions=function(){baseSaveMissions();notifyRoomChange("missions")};
+$("save-dinner").addEventListener("click",()=>{notifyRoomChange("history")});
+$("clear-history").addEventListener("click",()=>{notifyRoomChange("history")});
