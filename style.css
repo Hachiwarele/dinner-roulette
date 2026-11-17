@@ -94,3 +94,28 @@ body[data-theme="dark"] .history-item small,body[data-theme="dark"] .history-emp
 body[data-theme="dark"] .result-actions button:last-child{background:#483326;color:#f5c9a9;border-color:#74513d}
 @media(max-width:480px){.premium-banner{padding:20px}.page-tabs{gap:6px}.page-tab,.theme-toggle{font-size:11px}.result-actions{flex-direction:column}.result-actions button{width:100%;padding:12px}}
 @media(prefers-reduced-motion:reduce){.wheel,.wheel:before,.wheel.spinning,.result,.confetti-piece{animation:none!important}html{scroll-behavior:auto!important}}
+
+/* 3.0 DARTS EDITION — illustrated wheel, readable labels and flying dart */
+.wheel.dart-ready{width:min(100%,350px);min-height:unset;aspect-ratio:1;padding:9px;border-radius:50%;background:linear-gradient(140deg,#fdf4e6,#e8bd89);border:6px solid #b7784d;box-shadow:0 12px 30px #95663c2e,inset 0 0 0 3px #fff5df;gap:0;overflow:visible}
+.wheel.dart-ready:before{display:none}
+.dart-stage{position:absolute;inset:9px;border-radius:50%;display:grid;place-items:center}
+.dart-disc{position:absolute;inset:0;border-radius:50%;overflow:hidden;transform:rotate(0deg);will-change:transform;box-shadow:inset 0 0 0 4px #ffffff66}
+.dart-disc svg{width:100%;height:100%;display:block}
+.dart-projectile{position:absolute;top:-66px;left:50%;width:30px;height:65px;transform:translate(-50%,-95px) rotate(90deg);opacity:0;z-index:4;filter:drop-shadow(0 4px 3px #0005);pointer-events:none}
+.dart-flight{display:block;font-size:56px;color:#e15b45;-webkit-text-stroke:2px #873b32;line-height:1}
+.dart-projectile.dart-hit{animation:dart-hit .52s cubic-bezier(.15,.9,.25,1.2) forwards}
+@keyframes dart-hit{0%{transform:translate(-50%,-95px) rotate(90deg) scale(1.4);opacity:0}45%{opacity:1}80%{transform:translate(-50%,-2px) rotate(90deg) scale(1.12);opacity:1}100%{transform:translate(-50%,0px) rotate(90deg);opacity:1}}
+.wheel.dart-ready>.wheel-emoji{display:none}
+.wheel.dart-ready>strong{position:absolute;z-index:5;bottom:-35px;left:50%;transform:translateX(-50%);width:max-content;max-width:105%;padding:5px 13px;border-radius:999px;background:#fffaf1;border:1px solid #edc9a6;color:#845038;font-family:'Noto Sans JP',sans-serif;font-size:12px;box-shadow:0 4px 14px #a46b3b20}
+.wheel.dart-spinning{animation:none}
+.wheel.dart-spinning .dart-disc{filter:saturate(1.18)}
+.wheel.dart-landed{box-shadow:0 0 0 6px #eab46b55,0 15px 35px #95663c40}
+.wheel.dart-ready+.spin-button{margin-top:37px}
+.wheel-wrap:has(.dart-ready){gap:14px;padding:12px 0 0}
+.top-choice-grid .mission-wheel.dart-ready{width:min(100%,205px);min-height:unset;aspect-ratio:1;margin:0 auto}
+.top-choice-grid .mission-wheel.dart-ready>strong{font-size:10px;max-width:115%}
+.top-choice-grid .mission-wheel.dart-ready .dart-projectile{transform-origin:center}
+body[data-theme="dark"] .wheel.dart-ready{background:#564235;border-color:#aa7655;box-shadow:0 12px 30px #0006,inset 0 0 0 3px #a47b56}
+body[data-theme="dark"] .wheel.dart-ready>strong{background:#3b2c25;color:#f4d3ad;border-color:#7c5941}
+@media(max-width:560px){.top-choice-grid .mission-wheel.dart-ready{width:min(100%,250px)}.wheel.dart-ready{width:min(100%,300px)}}
+@media(prefers-reduced-motion:reduce){.dart-projectile.dart-hit{animation:none;opacity:1;transform:translate(-50%,0) rotate(90deg)}.dart-disc{transition:none!important}}
