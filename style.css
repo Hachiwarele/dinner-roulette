@@ -119,3 +119,13 @@ body[data-theme="dark"] .wheel.dart-ready{background:#564235;border-color:#aa765
 body[data-theme="dark"] .wheel.dart-ready>strong{background:#3b2c25;color:#f4d3ad;border-color:#7c5941}
 @media(max-width:560px){.top-choice-grid .mission-wheel.dart-ready{width:min(100%,250px)}.wheel.dart-ready{width:min(100%,300px)}}
 @media(prefers-reduced-motion:reduce){.dart-projectile.dart-hit{animation:none;opacity:1;transform:translate(-50%,0) rotate(90deg)}.dart-disc{transition:none!important}}
+
+/* Shared room panel */
+.room-panel{margin-bottom:18px}
+.room-header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.room-header h2{margin:0 0 6px;font-size:19px}.room-header p{margin:0;font-size:13px;line-height:1.6}
+.room-number{background:#e9c59f;color:#53351e;border-radius:12px;padding:9px 13px;font-weight:800;letter-spacing:.08em}
+.room-actions{display:flex;gap:9px;margin-top:14px}.room-actions input{width:135px;max-width:40%;padding:11px 12px;border:1px solid #d6ad8a;border-radius:12px;font-size:18px;letter-spacing:.18em;background:#fff;color:#49372d}
+.room-actions button{border:0;border-radius:12px;padding:11px 18px;background:#b77954;color:#fff;font-weight:800}
+.room-actions button:disabled{opacity:.55}.room-notice{font-size:11px;opacity:.72;line-height:1.6;margin:10px 0 0}
+body[data-theme="dark"] .room-number{background:#76543e;color:#fff0d8}
