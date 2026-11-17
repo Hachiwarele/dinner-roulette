@@ -64,3 +64,33 @@ body[data-theme="dark"] .mission-panel .hint{color:#b7a99b}
 body[data-theme="dark"] .editor-kind{background:#302b27;border-color:#51463d;color:#e6d8ca}
 body[data-theme="dark"] .editor-kind.active{background:#52745e;border-color:#52745e;color:#fff}
 @media(max-width:560px){.top-choice-grid{grid-template-columns:1fr;gap:0}.top-choice-grid>.panel{margin:10px 0}.top-choice-grid .mission-wheel{min-height:105px}}
+
+/* DINNER ROULETTE 2.0 */
+:root{--premium-shadow:0 16px 45px #a46b3b16}
+body{background-attachment:fixed}
+.app{width:min(100% - 28px,760px)}
+.hero h1{font-weight:500}
+.panel{box-shadow:var(--premium-shadow);transition:box-shadow .25s,transform .25s}
+.premium-banner{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:7px;padding:23px 25px;border-radius:24px;color:#fffaf1;background:linear-gradient(125deg,#c77b58,#df9c66 48%,#9e745b);box-shadow:0 16px 35px #b7794a35;margin-bottom:22px}
+.premium-banner:after{content:"✦";position:absolute;right:20px;top:-28px;font-size:135px;color:#ffffff24;pointer-events:none}
+.premium-banner span{font-size:10px;letter-spacing:.18em;font-weight:800}.premium-banner strong{font-family:'Kiwi Maru',serif;font-size:clamp(18px,4vw,24px);z-index:1}.premium-banner small{font-size:11px;opacity:.9;z-index:1}
+.spin-button{transition:transform .2s,filter .2s,box-shadow .2s}.spin-button:hover:not(:disabled){filter:brightness(1.07);transform:translateY(-2px)}
+.wheel{position:relative;overflow:hidden;isolation:isolate;transition:box-shadow .25s}.wheel:before{content:"";position:absolute;inset:-75%;background:conic-gradient(from 0deg,transparent,#ffffff66,transparent 30%,#ffffff40,transparent 60%);animation:shimmer 7s linear infinite;z-index:-1}
+.wheel.spinning{animation:wobble .11s ease-in-out infinite alternate;box-shadow:0 0 0 5px #e6a16a30,0 14px 35px #b97c4d28}
+.wheel.spinning:before{animation-duration:.65s}
+@keyframes shimmer{to{transform:rotate(360deg)}}
+.wheel strong{overflow-wrap:anywhere}
+.result{animation:reveal .6s cubic-bezier(.16,1,.3,1) both}
+@keyframes reveal{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+.result-title{font-size:clamp(27px,6vw,38px)}.result-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:9px}.result-actions button:last-child{background:#fff0e1;color:#a85e36;border-color:#eac2a6;font-weight:800}
+.history-panel{border-color:#eedccf}.history-stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.stat-pill{border-radius:999px;background:#fff2e4;padding:8px 12px;font-size:11px;color:#956446;font-weight:700}.history-list{display:grid;gap:8px}.history-item{display:flex;justify-content:space-between;gap:10px;align-items:center;background:#fff8f0;border:1px solid #f0e2d5;border-radius:13px;padding:12px 14px}.history-item strong{display:block;font-size:13px}.history-item small{display:block;color:#a38b7b;font-size:10px;margin-top:3px}.history-empty{font-size:12px;color:#a39487;text-align:center;padding:15px}.history-tools{text-align:right;margin-top:12px}
+#celebration{position:fixed;inset:0;pointer-events:none;z-index:100;overflow:hidden}.confetti-piece{position:absolute;top:-25px;width:9px;height:15px;border-radius:3px;animation:confetti-fall 1.6s ease-in forwards}
+@keyframes confetti-fall{to{transform:translate3d(var(--drift),110vh,0) rotate(800deg);opacity:0}}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #de9b64;outline-offset:3px}
+body[data-theme="dark"] .premium-banner{background:linear-gradient(125deg,#704634,#a36d4e,#604838)}
+body[data-theme="dark"] .stat-pill{background:#433126;color:#f2c59f}
+body[data-theme="dark"] .history-item{background:#302923;border-color:#544234}
+body[data-theme="dark"] .history-item small,body[data-theme="dark"] .history-empty{color:#c0a99a}
+body[data-theme="dark"] .result-actions button:last-child{background:#483326;color:#f5c9a9;border-color:#74513d}
+@media(max-width:480px){.premium-banner{padding:20px}.page-tabs{gap:6px}.page-tab,.theme-toggle{font-size:11px}.result-actions{flex-direction:column}.result-actions button{width:100%;padding:12px}}
+@media(prefers-reduced-motion:reduce){.wheel,.wheel:before,.wheel.spinning,.result,.confetti-piece{animation:none!important}html{scroll-behavior:auto!important}}
