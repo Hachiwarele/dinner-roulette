@@ -144,7 +144,8 @@ const originalSaveMissions=saveMissions;saveMissions=function(){originalSaveMiss
 
 /* Public three-digit shared rooms: local edits remain usable offline. */
 window.dinnerRoomBridge={
- getSeed:()=>({menus:JSON.parse(JSON.stringify(menus)),missions:[...missions],history:[...dinnerHistory]}),
+ getSeed:()=>({menus:cloneDefaults(),missions:[...defaultMissions],history:[]}),
+ resetForNewRoom(){this.applyRemote(this.getSeed());state.main=null;state.lastItem=null;result.hidden=true;detailPanel.hidden=true;mainValue.textContent="麺？ ご飯？ パン？";missionValue.textContent="今日のミッションは？";},
  applyRemote(data){
   if(!data||state.busy)return;
   if(data.menus&&typeof data.menus==="object"){
