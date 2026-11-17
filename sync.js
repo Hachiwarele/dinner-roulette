@@ -12,6 +12,7 @@ async function joinRoom(n){
  join.disabled=true;message("ルーム "+n+" に接続中…");
  try{
   if(unsub){unsub();unsub=null}active=null;
+  window.dinnerRoomBridge.resetForNewRoom();
   const room=ref(db,"rooms/"+n),seed=window.dinnerRoomBridge.getSeed();
   await runTransaction(room,old=>old===null?{menus:seed.menus,missions:seed.missions,history:seed.history,createdAt:Date.now()}:undefined,{applyLocally:false});
   active=n;localStorage.setItem(ROOM_KEY,n);displayRoom(n);
@@ -22,6 +23,6 @@ async function joinRoom(n){
 join.addEventListener("click",()=>joinRoom(code.value.trim()));
 code.addEventListener("input",()=>{code.value=code.value.replace(/\D/g,"").slice(0,3)});
 code.addEventListener("keydown",e=>{if(e.key==="Enter")join.click()});
-$("room-leave").addEventListener("click",()=>{if(unsub){unsub();unsub=null}active=null;localStorage.removeItem(ROOM_KEY);displayRoom(null);message("部屋から移動したよ。別の3桁を入力してね")});
-window.addEventListener("dinner-room-change",async e=>{if(!active||!ready||applying)return;try{await set(ref(db,"rooms/"+active+"/"+e.detail.key),e.detail.value)}catch(err){message("保存できなかったよ： "+(err.code||err.message))}});
+$("room-leave").addEventListener("click",()=>{if(unsub){unsub();unsub=null}active=null;localStorage.removeItem(ROOM_KEY);window.dinnerRoomBridge.resetForNewRoom();displayRoom(null);message("部屋から移動したよ。別の3桁を入力してね")});
+window.addEventListener("dinner-room-change",async e=>{if(!active||!ready||applying)return;const target=active;try{await set(ref(db,"rooms/"+target+"/"+e.detail.key),e.detail.value)}catch(err){message("保存できなかったよ： "+(err.code||err.message))}});
 try{await signInAnonymously(auth);ready=true;const saved=localStorage.getItem(ROOM_KEY);if(saved&&/^[0-9]{3}$/.test(saved)){code.value=saved;await joinRoom(saved)}else message("3桁の番号を入力して、部屋を作成・参加しよう！")}catch(err){message("Firebase認証に失敗したよ： "+(err.code||err.message))}
